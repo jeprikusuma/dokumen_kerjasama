@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Upload Dokumen Kerja Sama</title>
+</head>
+<body>
+    <section class="main">
+        <div class="input-area">
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="http://127.0.0.1:5000/">Beranda</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Upload</li>
+                    </ol>
+                </nav>
+                <h2>Manajemen Dokumen<br> Dokumen Kerja Sama</h2>
+                <h5 class="fs-6">Badan Kerja Sama dan Kehumasan <br> Universitas Pendidikan Ganesha</h5>
+            </div>
+            <div action="" class="d-flex flex-column">
+                <div class="mb-3">
+                    <label for="judul" class="form-label">1. Judul Kerja Sama</label>
+                    <input class="form-control" type="text" id="judul" placeholder="judul kerja sama...">
+                </div>
+                <div class="mb-3">
+                    <label for="input-document" class="form-label">2. Pilih Dokumen Kerja Sama</label>
+                    <input class="form-control" type="file" id="input-document">
+                </div>
+                <div class="mb-3">
+                    <label for="document-type" class="form-label">3. Pilih Jenis Dokumen Kerja Sama</label>
+                    <select class="form-select" aria-label="Default select example" id="document-type">
+                        <option value="dalam_negeri" selected>Dalam Negeri</option>
+                        <option value="luar_negeri">Luar Negeri</option>
+                      </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="submit-form">Upload</button>
+            </div>
+        </div>
+        <div class="result-area">
+            <div class="result-discover d-none">
+                <div class="image-discover">
+                    <img src="" class="image-document border">
+                    <small class="text-muted mt-2">Hasil koordinat komponen </small>
+                </div>
+                <div class="process ms-5">
+                    <h3 class="my-2">Hasil</h3>
+                    <div class="row mb-3">
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Tanda Tangan</h5>
+                            <div class="d-flex" id="ttd-area">
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Cap</h5>
+                            <div class="d-flex" id="cap-area">
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Meterai</h5>
+                            <div class="d-flex" id="meterai-area">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <h5 class="fs-6 ms-1">Keterangan</h5>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>Jumlah Tanda Tangan</td>
+                                    <td>:</td>
+                                    <th><span class="fw-bold" id="ttd"></span></th>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Cap</td>
+                                    <td>:</td>
+                                    <th><span class="fw-bold" id="cap"></span></th>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Meterai</td>
+                                    <td>:</td>
+                                    <th><span class="fw-bold" id="meterai"></span></th>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>:</td>
+                                    <th><span class="fw-bold" id="result-cek"></span></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a href="http://127.0.0.1:5000/" class="btn btn-primary" id="submit-form">Simpan</a>
+                    </div>
+                </div>
+            </div>
+            <div class="loading d-none">
+                <h3 class="text-primary"><img src="http://127.0.0.1:5000/static/images/loader.gif" class="process-loader ms-1"> Mengecek kelengkapan dokumen...</h3>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <script>       
+        const inputDocument = document.querySelector('#input-document'),
+            inputJudul = document.querySelector('#judul'),
+            documentType = document.querySelector('#document-type'),
+            submitForm = document.querySelector('#submit-form'),
+            imgDocument = document.querySelector('.image-document'),
+            resultArea = document.querySelector('.result-discover'),
+            loader = document.querySelector('.loading');
+
+        const ttd = document.querySelector('#ttd'),
+            cap = document.querySelector('#cap'),
+            meterai = document.querySelector('#meterai'),
+            ttd_area = document.querySelector('#ttd-area'),
+            cap_area = document.querySelector('#cap-area'),
+            meterai_area = document.querySelector('#meterai-area'),
+            result_cek = document.querySelector('#result-cek');
+
+        submitForm.addEventListener('click', () => {
+            const formData = new FormData()
+
+            if(loader.classList.contains('d-none')){
+                loader.classList.remove('d-none')
+            }
+            if(!resultArea.classList.contains('d-none')){
+                resultArea.classList.add('d-none')
+            }
+            const file = inputDocument.files[0];
+            formData.append("file", file);
+            formData.append("judul", inputJudul.value);
+            formData.append("jenis", documentType.value);
+            fetch('http://127.0.0.1:5000/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then((response) => response.json())
+            .then((result) => {               
+                let ttd_val = result.label.filter(el => el == 'ttd');
+                    ttd_val = ttd_val.length
+                let cap_val = result.label.filter(el => el == 'cap');
+                    cap_val = cap_val.length
+                let meterai_val = result.label.filter(el => el == 'meterai');
+                    meterai_val = meterai_val.length
+
+                ttd.innerHTML = ttd_val
+                cap.innerHTML = cap_val
+                meterai.innerHTML = meterai_val
+
+                if(documentType.value == 'dalam_negeri'){
+                    if((ttd_val == 2) && (cap_val == 2) && (meterai_val == 1)){
+                        result_cek.classList.remove('text-danger')
+                        result_cek.classList.add('text-primary')
+                        result_cek.innerHTML = 'Valid'
+                    }else{
+                        result_cek.classList.add('text-danger')
+                        result_cek.classList.remove('text-primary')
+                        result_cek.innerHTML = 'Tidak Valid'
+                    }
+                }else{
+                    if((ttd_val == 2) && (cap_val == 2)){
+                        result_cek.classList.remove('text-danger')
+                        result_cek.classList.add('text-primary')
+                        result_cek.innerHTML = 'Valid'
+                    }else{
+                        result_cek.classList.add('text-danger')
+                        result_cek.classList.remove('text-primary')
+                        result_cek.innerHTML = 'Tidak Valid'
+                    }
+                }
+                ttds = '';
+                caps = '';
+                meterais = '';
+
+                result.ttds.forEach(e => {
+                    ttds += `<img src="http://127.0.0.1:5000/static/images/results/${e}" class="image-component border me-1">`
+                });
+
+                result.caps.forEach(e => {
+                    caps += `<img src="http://127.0.0.1:5000/static/images/results/${e}" class="image-component border me-1">`
+                });
+
+                result.meterais.forEach(e => {
+                    meterais += `<img src="http://127.0.0.1:5000/static/images/results/${e}" class="image-component border me-1">`
+                });
+
+                ttd_area.innerHTML = ttds;
+                cap_area.innerHTML = caps;
+                meterai_area.innerHTML = meterais;
+                
+                imgDocument.src = 'http://127.0.0.1:5000/static/images/results/'+result.filename;
+
+                loader.classList.add('d-none');
+                resultArea.classList.remove('d-none');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        })
+    </script>
+</body>
+</html>

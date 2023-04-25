@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Detail Dokumen</title>
+</head>
+<body>
+    <section class="main">
+        <div class="detail-area col-12">
+            <div class="result-discover container  mt-5">
+                <div class="image-discover col-5 mt-2">
+                    <div class="d-flex">
+                        <img src="http://127.0.0.1:5000/static/images/covers/{{result[3]}}" class="image-document-2 me-1 border">
+                        <img src="http://127.0.0.1:5000/static/images/results/{{result[3]}}" class="image-document-2 me-1 border">
+                    </div>
+                    <small class="text-muted mt-2">Detail citra dokumen</small>
+                </div>
+                <div class="process ms-5 col-7">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="http://127.0.0.1:5000/">Beranda</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                        </ol>
+                    </nav>
+                    <h3 class="mb-3">Detail Dokumen</h3>
+                    <div class="info bg-light p-5 rounded">
+                        <h5 class="fs-6 ms-1">Keterangan</h5>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>Nama Kerjasama</td>
+                                    <td>:</td>
+                                    <td><span id="ttd">{{result[1]}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Dokumen</td>
+                                    <td>:</td>
+                                    <td><span id="ttd">{{'Dalam Negeri' if result[2] == 'dalam_negeri' else 'Luar Negeri'}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pihak 1</td>
+                                    <td>:</td>
+                                    <td><span id="ttd">Tidak diketahui</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pihak 2</td>
+                                    <td>:</td>
+                                    <td><span id="ttd">Tidak diketahui</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Tanda Tangan</td>
+                                    <td>:</td>
+                                    <td><span id="ttd">{{result[5]}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Cap</td>
+                                    <td>:</td>
+                                    <td><span id="cap">{{result[6]}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Meterai</td>
+                                    <td>:</td>
+                                    <td><span id="meterai">{{result[7]}}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>:</td>
+                                    <th><span class="fw-bold" id="result-cek">{{is_valid}}</span></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row mt-3 mb-3">
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Tanda Tangan</h5>
+                            <div class="d-flex" id="ttd-area">
+                                {% for kpn in komponen_ttd %}
+                                    <img src="http://127.0.0.1:5000/static/images/results/{{ kpn[3] }}" class="image-component border me-1">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Cap</h5>
+                            <div class="d-flex" id="cap-area">
+                                {% for kpn in komponen_cap %}
+                                    <img src="http://127.0.0.1:5000/static/images/results/{{ kpn[3] }}" class="image-component border me-1">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col mb-3">
+                            <h5 class="fs-6 ms-1">Meterai</h5>
+                            <div class="d-flex" id="meterai-area">
+                                {% for kpn in komponen_meterai %}
+                                    <img src="http://127.0.0.1:5000/static/images/results/{{ kpn[3] }}" class="image-component border me-1">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-success mb-5 px-2" href="http://127.0.0.1:5000/download/{{result[4]}}">Download PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+.main {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    overflow-x: hidden;
+}
+
+.input-area {
+    width: 30vw;
+    height: 100vh;
+    background-color: rgb(245, 245, 245);
+    padding: 35px;
+}
+
+.detail-area {
+   margin-top: 5vh;
+}
+
+.result-area {
+    display: flex;
+    align-items: center;
+    padding: 35px;
+}
+
+.result-discover {
+    display: flex; 
+}
+
+.image-discover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-document {
+    height: 75vh;
+}
+.image-document-2 {
+    width: 50%;
+}
+
+.process-loader {
+    height: 1.5rem;
+}
+
+.image-component {
+    height: 80px;
+}
